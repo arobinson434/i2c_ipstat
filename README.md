@@ -1,5 +1,6 @@
 # I2C IP Stat
 WIP
+
 A simple progam to read the IP of the host and display it on an SSD1306 OLED.
 This is intended to run on a Raspberry Pi.
 
