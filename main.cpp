@@ -53,13 +53,32 @@ int main() {
     if ( !display.OLEDSetBufferPtr(OLED_W, OLED_H, screen_buf, sizeof(screen_buf)) )
         return -3;
     
-    display.OLEDclearBuffer();
     display.setTextColor(WHITE);
-    display.setCursor(10,10);
 
-    display.print("IP: "+getIpStr());
-    display.OLEDupdate();
-    delay(5000);
+    std::string display_text;
+    std::string ip_text    = "IP: "+getIpStr();
+    size_t      ip_text_sz = ip_text.size();
+
+    for( uint8_t i=0; i < 42; i++ ){
+        if( i < ip_text_sz )
+            display_text = ip_text[ip_text_sz-1-i] + display_text;
+        else if( i >= ip_text_sz && i < 21 )
+            display_text = " " + display_text;
+        else {
+            display_text = " " + display_text;
+            display_text.pop_back();
+        }
+
+        display.OLEDclearBuffer();
+        display.setCursor(0,16);
+        display.print(display_text);
+        display.OLEDupdate();
+
+        if( i == ip_text_sz-1 )
+            delay(5000);
+        else
+            delay(100);
+    }
 
     display.OLEDPowerDown();
     display.OLED_I2C_OFF();
