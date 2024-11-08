@@ -34,27 +34,7 @@ std::string getIpStr() {
     return ret_val;
 }
 
-int main() {
-    SSD1306 display(OLED_W, OLED_H);
-    uint8_t screen_buf[OLED_FS];
-
-	if ( !bcm2835_init() ) {
-		std::cout << "Failed to init the bcm2835 library! Exiting...\n";
-		return -1;
-	}
-
-    if ( !display.OLED_I2C_ON() ) {
-        std::cout << "Failed to turn on the display! Exiting...\n";
-        bcm2835_close();
-        return -2;
-    }
-
-	display.OLEDbegin();
-    if ( !display.OLEDSetBufferPtr(OLED_W, OLED_H, screen_buf, sizeof(screen_buf)) )
-        return -3;
-    
-    display.setTextColor(WHITE);
-
+void showIp(SSD1306& display) {
     std::string display_text;
     std::string ip_text    = "IP: "+getIpStr();
     size_t      ip_text_sz = ip_text.size();
@@ -79,6 +59,30 @@ int main() {
         else
             delay(100);
     }
+}
+
+int main() {
+    SSD1306 display(OLED_W, OLED_H);
+    uint8_t screen_buf[OLED_FS];
+
+	if ( !bcm2835_init() ) {
+		std::cout << "Failed to init the bcm2835 library! Exiting...\n";
+		return -1;
+	}
+
+    if ( !display.OLED_I2C_ON() ) {
+        std::cout << "Failed to turn on the display! Exiting...\n";
+        bcm2835_close();
+        return -2;
+    }
+
+	display.OLEDbegin();
+    if ( !display.OLEDSetBufferPtr(OLED_W, OLED_H, screen_buf, sizeof(screen_buf)) )
+        return -3;
+
+    display.setTextColor(WHITE);
+
+    showIp(display);
 
     display.OLEDPowerDown();
     display.OLED_I2C_OFF();
