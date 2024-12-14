@@ -1,0 +1,38 @@
+#!/bin/sh
+
+DAEMON="/bin/i2c_ipstat"
+PIDFILE="/var/run/i2c_ipstat.pid"
+
+start() {
+	printf "Starting I2C IP Stat:"
+	start-stop-daemon -b -m -S -q -p "$PIDFILE" -x "$DAEMON"
+
+	status=$?
+	if [ "$status" -eq 0 ]; then
+		echo "OK"
+	else
+		echo "FAIL"
+	fi
+	return "$status"
+}
+
+stop() {
+	printf "Stopping I2C IP Stat:"
+	start-stop-daemon -K -q -p "$PIDFILE"
+
+	status=$?
+	if [ "$status" -eq 0 ]; then
+		echo "OK"
+	else
+		echo "FAIL"
+	fi
+	return "$status"
+}
+
+case "$1" in
+	start|stop)
+		"$1";;
+	*)
+		echo "Usage: $0 {start|stop}"
+		exit 1
+esac

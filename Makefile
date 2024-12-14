@@ -1,10 +1,7 @@
-CFLAGS  = -I../SSD1306_OLED_RPI/include/ 
-LDFLAGS = -lbcm2835 -L../SSD1306_OLED_RPI/ -lSSD1306_OLED_RPI
+LDFLAGS = -lbcm2835 -lSSD1306_OLED_RPI
 
-all: ip_disp
+all: i2c_ipstat
 
-ip_disp: main.cpp
-	$(CXX) $(CFLAGS) -o ip_disp main.cpp $(LDFLAGS)
+i2c_ipstat: main.cpp
+	$(CXX) -o i2c_ipstat main.cpp $(LDFLAGS)
 
-install: ip_disp
-	@cp ip_disp ../buildroot/output/target/bin/

@@ -82,7 +82,10 @@ int main() {
 
     display.setTextColor(WHITE);
 
-    showIp(display);
+    while( 1 ) {
+        showIp(display);
+        delay(2000);
+    }
 
     display.OLEDPowerDown();
     display.OLED_I2C_OFF();
